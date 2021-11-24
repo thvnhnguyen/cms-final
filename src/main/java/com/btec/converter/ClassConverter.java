@@ -17,8 +17,7 @@ public class ClassConverter {
 		return result;
 	}
 	
-	public ClassEntity toEntity(ClassDTO dto) {
-		ClassEntity result = new ClassEntity();
+	public ClassEntity toEntity(ClassEntity result, ClassDTO dto) {
 		result.setClassName(dto.getClassName());
 		result.setPassword(dto.getPassword());
 		return result;

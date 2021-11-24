@@ -4,6 +4,8 @@
 <c:url var="contentdetailURL" value="/trainer/classoverview/edit"/>
 <c:url var="classoverviewURL" value="/trainer/manageclass/class-overview"/>
 <c:url var="asmAPI" value="/api/asm"/>
+<c:url var="manageclassURL" value="/trainer/manageclass?page=1&limit=4"/>
+<c:url var="homeURL" value="/trainer/home"/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,24 +17,27 @@
 			id="formSubmit" method="get">
 			<div id="breadcrumbs">
 				<ul class="breadcrumb">
-					<li><a href="">Home</a></li>
-					<li><a href="manage-class.html">Manage Class</a></li>
+					<li><a href="${homeURL}">Home</a></li>
+					<li><a href="${manageclassURL}">Manage Class</a></li>
 					<li>BHAF-1911-2.2</li>
 				</ul>
 			</div>
 			<div id="main-content">
 				<div class="right-content">
 					<div class="nav-tab">
-					<c:url var="createAsmURL" value="/trainer/classoverview/edit" />
-					<c:url var="classOverviewURL" value="/trainer/manageclass/class-overview?page=1&limit=4" />
+					<c:url var="classoverviewtabURL" value="/trainer/manageclass/class-overview">
+						<c:param name="classId" value="${classlist.classId}"></c:param>
+						<c:param name="page" value="1"></c:param>
+						<c:param name="limit" value="4"></c:param>
+					</c:url>
 						<button class="btn tablink"
-							onclick="openTab(event,'Class-Overview')"><a href='${classOverviewURL}'>Class Overview</a></button>
-						<button class="btn tablink"
-							onclick="openTab(event, 'Create-Code')">Create Code</button>
+							onclick="openTab(event,'Class-Overview')"><a href='${classoverviewtabURL}'>Class Overview</a></button>
 						<button class="btn tablink first-tab"
 							onclick="openTab(event, 'Create-Assignment')">
-							<a href='${createAsmURL}'>Create Assignment</a>
+							<a href='${contentdetailURL}'>Create Assignment</a>
 						</button>
+						<button class="btn tablink"
+							onclick="openTab(event, 'Create-Code')">Create Code</button>
 						<button class="btn tablink"
 							onclick="openTab(event, 'Manage-Student')">Manage
 							Student</button>
@@ -166,7 +171,6 @@
             dataType: 'json',
             success: function (result) {
             	window.location.href = "${contentdetailURL}?asmId="+result.asmId+"&message=insert_success";
-            	alert("Thanh cong");
             },
             error: function (error) {
             	window.location.href = "${classoverviewURL}?page=1&limit=4&message=error_system";

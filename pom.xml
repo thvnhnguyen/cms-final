@@ -174,7 +174,11 @@
 			<version>1.9.13</version>
 		</dependency>
 		<!--end json -->
-
+		<dependency>
+		    <groupId>org.springframework.security</groupId>
+		    <artifactId>spring-security-oauth2-client</artifactId>
+		    <version>5.2.2.RELEASE</version>
+		</dependency>
 	</dependencies>
 
 	<build>

@@ -58,7 +58,7 @@
 					<li><a href="manage-student.html"><i
 							class="fas fa-user-graduate"></i> Manage Student</a></li>
 				</ul></li>
-			<li><a href="#"><i class="<c:url value='/trainer/event'/>"></i>
+			<li><a href="<c:url value='#'/>"><i class="fas fa-calendar-day"></i>
 					Event</a></li>
 		</ul>
 		<a href="javascript:void(0);" class="nav-icon" onclick="dropNavRes()">&#9776;</a>

@@ -2,7 +2,9 @@
 	pageEncoding="UTF-8"%>
 <%@include file="/common/taglib.jsp"%>
 <c:url var="contentdetailURL" value="/trainer/classoverview/edit"/>
-<c:url var="classoverviewURL" value="/trainer/manageclass/class-overview"/>
+<c:url var="classoverviewtabURL" value="/trainer/manageclass/class-overview?page=1&limit=4"/>
+<c:url var="manageclassURL" value="/trainer/manageclass?page=1&limit=4"/>
+<c:url var="homeURL" value="/trainer/home"/>
 <c:url var="asmAPI" value="/api/asm"/>
 <!DOCTYPE html>
 <html>
@@ -13,9 +15,9 @@
 	<div id="content">
 		<div id="breadcrumbs">
 			<ul class="breadcrumb">
-				<li><a href="trainer-index.html">Home</a></li>
-				<li><a href="manage-class.html">My Classes</a></li>
-				<li><a href="class-overview.html">BHAF-1911-2.2</a></li>
+				<li><a href="${homeURL}">Home</a></li>
+				<li><a href="${manageclassURL}">My Classes</a></li>
+				<li><a href="${classoverviewtabURL}">Class</a></li>
 				<li>Asm 1 - Topic 1</li>
 			</ul>
 		</div>
@@ -30,15 +32,23 @@
 					<h2>${model.asmName}</h2>
 					<table id="asm-info">
 						<tr>
-							<td>Due</td>
-							<td>Saturday, 23 January 2021, 11:59 PM</td>
+							<td><strong>Assignment Brief</strong></td>
+							<td>${model.asmBrief}</td>
 						</tr>
 						<tr>
-							<td>Submitsion Type</td>
-							<td>.pdf</td>
+							<td><strong>Due</strong></td>
+							<td>${model.asmDateDue}, ${model.asmTimeDue}</td>
 						</tr>
 						<tr>
-							<td>Paid</td>
+							<td><strong>Submitsion Type</strong></td>
+							<td>${model.subType}</td>
+						</tr>
+						<tr>
+							<td><strong>Limit Item</strong></td>
+							<td>${model.limitItem}</td>
+						</tr>
+						<tr>
+							<td><strong>Paid</strong></td>
 							<td>30/30</td>
 						</tr>
 					</table>
@@ -66,7 +76,7 @@
 								<form:input cssClass="input-info edit-input" path="subType" />
 								<h4>Due</h4>
 								<form:input type="date" cssClass="input-info edit-input" path="asmDateDue"/>
-								<form:input type="time" cssClass="input-info edit-input" path="asmTimeDue"/>
+								<form:input type="time" step="2" cssClass="input-info edit-input" path="asmTimeDue"/>
 								<h4>Limit Item</h4>
 								<form:input cssClass="input-info edit-input" path="limitItem" />
 								<h4>Class Name</h4>
@@ -79,7 +89,7 @@
 									class="btn-edit-asm">Edit</button>
 							</form:form>
 						</div>
-						<button id="btnDeleteAsm" class="btn btn-2" type ="button" onclick="warningBeforeDelete()">
+						<button style="background-color: #D11A2A; color : #fff;" id="btnDeleteAsm" class="btn btn-delete" type ="button" onclick="warningBeforeDelete()">
 							<i class="fas fa-trash"></i> Delete
 						</button>
 					</div>
@@ -103,32 +113,20 @@
 								</form>
 							</td>
 						</tr>
+						<form action="<c:url value='/trainer/classoverview/edit'/>"
+			id="formSubmit" method="get">
+						<c:forEach var="subasmlist" items="${subasmlist.listResult}">
 						<tr>
-							<td>SV1</td>
-							<td>Lee Sin</td>
-							<td>Saturday, 23 January 2021, 11:59 PM</td>
+							<td>${subasmlist.subAsmId}</td>
+							<td>${subasmlist.username}</td>
+							<td>asa</td>
 							<td>.pdf</td>
-							<td>not graded yet</td>
-							<td><a href="view-sub-asm.html"><i class="fas fa-eye"></i>
+							<td>${subasmlist.grade}</td>
+							<td><a href="/trainer/classoverview/grade-subasm?subAsmId=${subasmlist.subAsmId}"><i class="fas fa-eye"></i>
 									View</a></td>
 						</tr>
-						<tr>
-							<td>SV1</td>
-							<td>Lee Sin</td>
-							<td>Saturday, 23 January 2021, 11:59 PM</td>
-							<td>.pdf</td>
-							<td>not graded yet</td>
-							<td><a href="view-sub-asm.html"><i class="fas fa-eye"></i>
-									View</a></td>
-						</tr>
-						<tr>
-							<td>SV1</td>
-							<td>Lee Sin</td>
-							<td>Saturday, 23 January 2021, 11:59 PM</td>
-							<td>.pdf</td>
-							<td>not graded yet</td>
-							<td><a href=""><i class="fas fa-eye"></i> View</a></td>
-						</tr>
+						</c:forEach>
+						</form>
 					</table>
 				</div>
 			</div>

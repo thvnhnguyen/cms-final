@@ -1,6 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@include file="/common/taglib.jsp"%>
+<c:url var="manageclassURL" value="/trainer/manageclass?page=1&limit=4"/>
+<c:url var="homeURL" value="/trainer/home"/>
+<c:url var="editpassURL" value="/trainer/classoverview/editpass">
+	<c:param name="classId" value="${classinfo.classId}"/>
+</c:url>
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,8 +17,8 @@
 			id="formSubmit" method="get">
 			<div id="breadcrumbs">
 				<ul class="breadcrumb">
-					<li><a href="">Home</a></li>
-					<li><a href="manage-class.html">Manage Class</a></li>
+					<li><a href="${homeURL}">Home</a></li>
+					<li><a href="${manageclassURL}">Manage Class</a></li>
 					<li>BHAF-1911-2.2</li>
 				</ul>
 			</div>
@@ -33,7 +38,7 @@
 							<a href='${createAsmURL}'>Create Assignment</a>
 						</button>
 						<button class="btn tablink"
-							onclick="openTab(event, 'Create-Code')">Edit Code</button>
+							onclick="openTab(event, 'Create-Code')"><a href="${editpassURL}">Edit Code</a></button>
 						<button class="btn tablink"
 							onclick="openTab(event, 'Manage-Student')">Manage
 							Student</button>
@@ -42,7 +47,7 @@
 						<div class="class-info">
 							<h3>Class Password :</h3>
 							<input type="password" id="codeInput" placeholder="" required
-								disabled value="thanh" /><br /> <input
+								disabled value="${classinfo.password}" /><br /> <input
 								type="checkbox" name="" id="" onclick="showpassFunc()" /> Show
 							Password
 						</div>
@@ -64,16 +69,7 @@
 							<input type="hidden" value="" id="page" name="page" /> <input
 								type="hidden" value="" id="limit" name="limit" />
 						</div>
-					</div>
-					<div id="Create-Code" class="tab-content" style="display: none">
-						<form action="">
-							<h4>Code for Class</h4>
-							<input type="password" id="codeInput" placeholder=""
-								class="input-info" required /><br /> <input type="checkbox"
-								name="" id="" onclick="showpassFunc()" /> Show Password
-						</form>
-						<button type="submit" class="btn btn-create-code">Update</button>
-					</div>				
+					</div>			
 					<div id="Manage-Student" class="tab-content" style="display: none">
 						<div class="table-wrapper">
 							<div class="table-title">

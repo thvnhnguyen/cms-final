@@ -48,5 +48,18 @@ public class ClassService implements IClassService {
 		}
 		return result;
 	}
+	@Override
+	public ClassDTO findOne(Long classId) {
+		ClassEntity entity = classRepository.findOne(classId);
+		return classConverter.toDto(entity);
+	}
+	@Override
+	@org.springframework.transaction.annotation.Transactional
+	public ClassDTO savepass(ClassDTO dto) {
+		ClassEntity oldClass = classRepository.findOne(dto.getClassId());
+		ClassEntity classEntity = new ClassEntity();
+		classEntity = classConverter.toEntity(oldClass,dto);
+		return classConverter.toDto(classRepository.save(classEntity));
+	}
 
 }

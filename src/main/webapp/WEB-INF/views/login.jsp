@@ -53,6 +53,7 @@
 								</div>
 							</div>
 							<div class="col-md-12 mb-3">
+							<div class="g-signin2" data-onsuccess="onSignIn"></div>
 								<p class="text-center">
 									<a href="javascript:void();" class="google btn mybtn"><i
 										class="fa fa-google-plus"> </i>Google </a>

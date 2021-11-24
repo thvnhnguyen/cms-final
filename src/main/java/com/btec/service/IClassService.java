@@ -11,4 +11,6 @@ public interface IClassService {
 	List<ClassDTO> findAll(Pageable pageable);
 	int getTotalItem();
 	Map<Long, String> findAll();
+	ClassDTO findOne(Long classId);
+	ClassDTO savepass(ClassDTO dto);
 }
