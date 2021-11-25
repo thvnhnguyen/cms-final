@@ -1,4 +1,4 @@
-package com.btec.controller.trainer;
+package com.btec.controller.staff;
 
 import java.util.Map;
 
@@ -18,45 +18,25 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.btec.dto.ClassDTO;
-import com.btec.dto.UserDTO;
 import com.btec.service.IClassService;
-import com.btec.service.IUserService;
+import com.btec.service.impl.ClassService;
 import com.btec.util.MessageUtil;
 
-@Controller(value = "homeControllerOfTrainer")
+@Controller(value = "homeControllerOfStaff")
 public class HomeController {
-	
 	
 	@Autowired
 	private IClassService classService;
 	
-	@Autowired IUserService userService;
+	@Autowired MessageUtil messageUtil;
 	
-	@Autowired
-	private MessageUtil messageUtil;
+	@RequestMapping(value = "/staff/home", method = RequestMethod.GET)
+	public ModelAndView accessDenied() {
+		ModelAndView mav = new ModelAndView("staff/home");
+		return mav;
+	}
 	
-	@RequestMapping(value = "/trainer/home", method = RequestMethod.GET)
-	   public ModelAndView trainerHome() {
-	      ModelAndView mav = new ModelAndView("trainer/home");
-	      return mav;
-	   }
-	
-	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	   public ModelAndView loginPage() {
-	      ModelAndView mav = new ModelAndView("login");
-	      return mav;
-	   }
-	
-	@RequestMapping(value = "/trainer/update-profile", method = RequestMethod.GET)
-	   public ModelAndView updateProfile(@RequestParam("username") String username) {
-	      ModelAndView mav = new ModelAndView("trainer/updateprofile");
-	      UserDTO userinfo = new UserDTO();
-	      userinfo = userService.findOne(username);
-	      mav.addObject("userinfo", userinfo);
-	      return mav;
-	   }
-	
-	@RequestMapping(value = "/trainer/manageclass", method = RequestMethod.GET)
+	@RequestMapping(value = "/staff/manageclass", method = RequestMethod.GET)
 	   public ModelAndView manageClass(@RequestParam("page") int page, @RequestParam("limit") int limit,
 				HttpServletRequest request) {
 		ClassDTO model = new ClassDTO();
@@ -75,18 +55,4 @@ public class HomeController {
 		mav.addObject("model", model);
 		return mav;
 	   }
-	
-	@RequestMapping(value = "/logout", method = RequestMethod.GET)
-	public ModelAndView logout(HttpServletRequest request, HttpServletResponse response) {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		if (auth != null) {
-			new SecurityContextLogoutHandler().logout(request, response, auth);
-		}
-		return new ModelAndView("redirect:/trainer/home");
-	}
-	
-	@RequestMapping(value = "/accessDenied", method = RequestMethod.GET)
-	public ModelAndView accessDenied() {
-		return new ModelAndView("redirect:/login?accessDenied");
-	}
 }

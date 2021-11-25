@@ -76,16 +76,4 @@ public class AsmService implements IAsmService {
 			asmRepository.delete(asmid);
 		}
 	}
-
-	@Override
-	public List<AsmDTO> findAllByclassId(Long classId, Pageable pageable) {
-		List<AsmDTO> asmbyclassid = new ArrayList<>();
-		List<AsmEntity> entities = asmRepository.findAllByclass(classId, pageable);
-		for (AsmEntity item: entities) {
-			AsmDTO asmDTO = asmConverter.toDto(item);
-			asmbyclassid.add(asmDTO);
-		}
-		return asmbyclassid;
-	}
-
 }

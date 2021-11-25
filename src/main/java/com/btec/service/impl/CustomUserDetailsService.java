@@ -38,6 +38,8 @@ public class CustomUserDetailsService implements UserDetailsService {
 		}
 		MyUser myUser = new MyUser(userEntity.getUsername(), userEntity.getPassword(), true, true, true, true, authorities);
 		myUser.setFullName(userEntity.getFullName());
+		myUser.setUsername(userEntity.getUsername());
+		myUser.setPassword(userEntity.getPassword());
 		return myUser;
 	}
 

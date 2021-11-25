@@ -65,11 +65,11 @@
 </head>
 <body>
 
-	<%@ include file = "/common/admin/header.jsp" %>
+	<%@ include file = "/common/trainee/header.jsp" %>
 
 	<dec:body/>
 	
-	<%@ include file = "/common/admin/footer.jsp" %>
+	<%@ include file = "/common/trainee/footer.jsp" %>
 	<script src="<c:url value='/template/assets/js/pagination-demo.js' />"></script>
 	<script src="<c:url value='/template/assets/js/jquery.twbsPagination.js' />"></script>
 	<script src="<c:url value='/template/assets/js/jquery.twbsPagination.min.js' />"></script>

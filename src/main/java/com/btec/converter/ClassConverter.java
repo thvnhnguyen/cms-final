@@ -14,6 +14,15 @@ public class ClassConverter {
 		result.setClassId(entity.getClassId());
 		result.setClassName(entity.getClassName());
 		result.setPassword(entity.getPassword());
+		result.setSubjectId(entity.getSubject().getSubjectId());
+		result.setContentId(entity.getContent().getContentId());
+		return result;
+	}
+	
+	public ClassEntity toEntity(ClassDTO dto) {
+		ClassEntity result = new ClassEntity();
+		result.setClassName(dto.getClassName());
+		result.setPassword(dto.getPassword());
 		return result;
 	}
 	

@@ -8,7 +8,6 @@ import com.btec.dto.AsmDTO;
 
 public interface IAsmService {
 	List<AsmDTO> findAll(Pageable pageable);
-	List<AsmDTO> findAllByclassId(Long classId, Pageable pageable);
 	int getTotalItem();
 	AsmDTO findById(long asmId);
 	AsmDTO save(AsmDTO dto);

@@ -10,6 +10,9 @@
     <http auto-config="false" use-expressions="true" disable-url-rewriting="true">
     
     	<intercept-url pattern="/admin/home" access="hasAnyRole('admin')" />
+    	<intercept-url pattern="/staff/home" access="hasAnyRole('staff')" />
+    	<intercept-url pattern="/trainer/home" access="hasAnyRole('trainer')" />
+    	<intercept-url pattern="/trainee/home" access="hasAnyRole('trainee')" />
     	
     	<access-denied-handler error-page="/accessDenied" />
         <form-login  login-page="/login"

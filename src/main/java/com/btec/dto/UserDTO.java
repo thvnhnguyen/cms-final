@@ -1,6 +1,6 @@
 package com.btec.dto;
 
-import java.sql.Timestamp;
+import java.sql.Date;
 
 public class UserDTO extends AbstractDTO<UserDTO> {
 	private String username;
@@ -8,7 +8,7 @@ public class UserDTO extends AbstractDTO<UserDTO> {
 	private String fullName;
 	private String phoneNumber;
 	private String email;
-	private Timestamp dob;
+	private Date dob;
 	public String getUsername() {
 		return username;
 	}
@@ -39,10 +39,11 @@ public class UserDTO extends AbstractDTO<UserDTO> {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public java.sql.Timestamp getDob() {
+	
+	public Date getDob() {
 		return dob;
 	}
-	public void setDob(java.sql.Timestamp dob) {
+	public void setDob(Date dob) {
 		this.dob = dob;
 	}
 	public Long getRoleId() {

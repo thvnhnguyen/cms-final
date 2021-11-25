@@ -23,11 +23,8 @@
 							alt="" /> <span class="btn-user-element"><%=SecurityUtils.getPrincipal().getFullName()%></span> <i
 							class="fas fa-chevron-down btn-user-element"></i>
 					</button>
-					<c:url var="updateProfileURL" value="/trainer/update-profile">
-						<c:param name="username" value="<%=SecurityUtils.getPrincipal().getUsername()%>"/>
-					</c:url>
 					<div id="drop" class="header-sub-nav">
-						<a href="${updateProfileURL}"><i class="fas fa-user-cog"></i>
+						<a href="update-profile.html"><i class="fas fa-user-cog"></i>
 							<span>Settings</span></a> <a href="<c:url value='/logout'/>"><i
 							class="fas fa-sign-out-alt"></i> <span>Log out</span></a>
 					</div>
@@ -56,10 +53,10 @@
 					class="fas fa-angle-down"></i>
 			</a>
 				<ul class="subnav">
-					<li><a href="<c:url value='/trainer/manageclass?page=1&limit=4'/>"><i
+					<li><a href="<c:url value='/staff/manageclass?page=1&limit=4'/>"><i
 							class="fas fa-graduation-cap"></i> Manage Class</a></li>
-					<li><a href="manage-student.html"><i
-							class="fas fa-user-graduate"></i> Manage Student</a></li>
+					<li><a href="<c:url value='/staff/createclass'/>"><i
+							class="fas fa-user-graduate"></i> Create Class</a></li>
 				</ul></li>
 			<li><a href="<c:url value='#'/>"><i class="fas fa-calendar-day"></i>
 					Event</a></li>

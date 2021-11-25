@@ -8,7 +8,7 @@
 </head>
 <body>
 	<div class="logo">
-		<img class="img-logo" src="assets/images/logo.png" alt="" />
+		<img class="img-logo" src="<c:url value='template/assets/images/logo.png'/>" alt="" />
 	</div>
 	<!-- form -->
 	<div class="container">

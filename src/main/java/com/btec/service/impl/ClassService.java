@@ -9,10 +9,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.btec.constant.SystemConstant;
+import com.btec.converter.AsmConverter;
 import com.btec.converter.ClassConverter;
+import com.btec.dto.AsmDTO;
 import com.btec.dto.ClassDTO;
+import com.btec.entity.AsmEntity;
 import com.btec.entity.ClassEntity;
+import com.btec.entity.ContentEntity;
+import com.btec.entity.SubjectEntity;
+import com.btec.entity.UserEntity;
 import com.btec.repository.ClassRepository;
+import com.btec.repository.ContentRepository;
+import com.btec.repository.SubjectRepository;
+import com.btec.repository.UserRepository;
 import com.btec.service.IClassService;
 
 @Service
@@ -20,7 +30,19 @@ import com.btec.service.IClassService;
 public class ClassService implements IClassService {
 
 	@Autowired
+	private AsmConverter asmConverter;
+	
+	@Autowired
 	private ClassRepository classRepository;
+	
+	@Autowired
+	private SubjectRepository subjectRepository;
+	
+	@Autowired
+	private ContentRepository contentRepository;
+	
+	@Autowired 
+	private UserRepository userRepository;
 	
 	@Autowired
 	private ClassConverter classConverter;
@@ -36,7 +58,6 @@ public class ClassService implements IClassService {
 	}
 	@Override
 	public int getTotalItem() {
-		// TODO Auto-generated method stub
 		return (int) classRepository.count();
 	}
 	@Override
@@ -55,11 +76,36 @@ public class ClassService implements IClassService {
 	}
 	@Override
 	@org.springframework.transaction.annotation.Transactional
-	public ClassDTO savepass(ClassDTO dto) {
-		ClassEntity oldClass = classRepository.findOne(dto.getClassId());
+	public ClassDTO save(ClassDTO dto) {
+		SubjectEntity subjectclass = subjectRepository.findOne(dto.getSubjectId());
+		ContentEntity contentclass = contentRepository.findOne(dto.getContentId());
+		List<UserEntity> userclass = userRepository.findAllByUsernameAndStatus(dto.getUsername(), SystemConstant.ACTIVE_STATUS);
 		ClassEntity classEntity = new ClassEntity();
-		classEntity = classConverter.toEntity(oldClass,dto);
+		if (dto.getClassId() != null) {
+			ClassEntity oldClass = classRepository.findOne(dto.getClassId());
+			oldClass.setSubject(subjectclass);
+			oldClass.setUserclass(userclass);
+			oldClass.setContent(contentclass);
+			classEntity = classConverter.toEntity(oldClass,dto);
+		}
+		else
+		{
+			classEntity = classConverter.toEntity(dto);
+			classEntity.setUserclass(userclass);
+			classEntity.setContent(contentclass);
+			classEntity.setSubject(subjectclass);
+		}
 		return classConverter.toDto(classRepository.save(classEntity));
+	}
+	@Override
+	public List<AsmDTO> findByClassId(Long classId) {
+		List<AsmDTO> asmmodel = new ArrayList<>();
+		List<AsmEntity> entities = classRepository.findOneByclassId(classId).getAsms();
+		for (AsmEntity item: entities) {
+			AsmDTO asmDTO = asmConverter.toDto(item);
+			asmmodel.add(asmDTO);
+		}
+		return asmmodel;
 	}
 
 }

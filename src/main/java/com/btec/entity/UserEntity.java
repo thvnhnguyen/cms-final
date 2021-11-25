@@ -1,5 +1,6 @@
 package com.btec.entity;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +33,7 @@ public class UserEntity extends BaseEntity {
 	private String email;
 
 	@Column(name = "dob")
-	private Timestamp dob;
+	private Date dob;
 
 	@Column(name = "status")
 	private Integer status;
@@ -41,7 +42,8 @@ public class UserEntity extends BaseEntity {
 	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "username"), inverseJoinColumns = @JoinColumn(name = "roleId"))
 	private List<RoleEntity> roles = new ArrayList<>();
 	
-	@OneToMany(mappedBy = "userclass")
+	@ManyToMany
+	@JoinTable(name = "user_class", joinColumns = @JoinColumn(name = "username"), inverseJoinColumns = @JoinColumn(name = "classId"))
 	private List<ClassEntity> classuser = new ArrayList<>();
 	
 	@OneToMany(mappedBy = "user")
@@ -103,11 +105,11 @@ public class UserEntity extends BaseEntity {
 		this.email = email;
 	}
 
-	public Timestamp getDob() {
+	public Date getDob() {
 		return dob;
 	}
 
-	public void setDob(Timestamp dob) {
+	public void setDob(Date dob) {
 		this.dob = dob;
 	}
 

@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -35,18 +36,17 @@ public class ClassEntity extends BaseEntity {
     @JoinColumn(name = "contentId")
     private ContentEntity content;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "username")
-    private UserEntity userclass;
+	@ManyToMany(mappedBy = "classuser")
+    private List<UserEntity> userclass = new ArrayList<>();
 	
 	@OneToMany(mappedBy = "classs")
 	private List<AsmEntity> asms = new ArrayList<>();
 
-	public UserEntity getUserclass() {
+	public List<UserEntity> getUserclass() {
 		return userclass;
 	}
 
-	public void setUserclass(UserEntity userclass) {
+	public void setUserclass(List<UserEntity> userclass) {
 		this.userclass = userclass;
 	}
 
