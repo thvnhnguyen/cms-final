@@ -1,16 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@include file="/common/taglib.jsp"%>
-<%@ page import="com.btec.util.SecurityUtils" %>
-<c:url var="manageclassURL" value="/trainer/manageclass?page=1&limit=4"/>
-<c:url var="homeURL" value="/trainer/home"/>
-<c:url var="classoverviewURL" value="/trainer/manageclass/class-overview">
-	<c:param name="classId" value="${classinfo.classId}"></c:param>
-	<c:param name="page" value="1"></c:param>
-	<c:param name="limit" value="4"></c:param>
-</c:url>
-<c:url var="editpassURL" value="/trainer/classoverview/editpass"/>
+	<%@include file="/common/taglib.jsp"%>
 <c:url var="classAPI" value="/api/class"/>
+<c:url var="staffmanageclassURL" value="/staff/manageclass"/>
+<c:url var="staffaddclassURL" value="/staff/createclass"/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -25,45 +18,50 @@
 				<li>BHAF-1911-2.2</li>
 			</ul>
 		</div>
-		<c:if test="${not empty message}">
-			<div class="alert alert-${alert}">
-				<strong>${message}!</strong>
-			</div>
-      	</c:if>
 		<div id="main-content">
 			<div class="right-content">
 				<div class="nav-tab">
-				<c:url var="createAsmURL" value="/trainer/classoverview/edit" />
-					<button class="btn tablink"
-						onclick="openTab(event,'Class-Overview')"><a href='${classoverviewURL}'>Class Overview</a></button>
-					<button class="btn tablink"
-						onclick="openTab(event, 'Create-Assignment')">
-						<a href='${createAsmURL}'>Create Assignment</a>
+					<c:url var="classoverviewtabURL"
+						value="/trainer/manageclass/class-overview">
+						<c:param name="classId" value="${classlist.classId}"></c:param>
+						<c:param name="page" value="1"></c:param>
+						<c:param name="limit" value="4"></c:param>
+					</c:url>
+					<button class="btn tablink first-tab">
+						Create New Class
 					</button>
-					<button class="btn tablink first-tab"
-						onclick="openTab(event, 'Create-Code')">Edit Code</button>
-					<button class="btn tablink"
-						onclick="openTab(event, 'Manage-Student')">Manage
-						Student</button>
 				</div>
 				<c:if test="${not empty message}">
 					<div class="alert alert-${alert}">
- 							<strong>${message}!</strong>
+						<strong>${message}!</strong>
 					</div>
-		      	</c:if>
-				<div id="Create-Code" class="tab-content">
-					<form:form role="form" id="formEditPass" modelAttribute="classinfo">
-						<h4>Code for Class</h4>
+				</c:if>
+				<div id="Create-Assignment" class="tab-content">
+					<form:form role="form" id="formAddClass" modelAttribute="classmodel">
+						<h4>Class Name</h4>
+						<form:input cssClass="input-info" path="className"/>
+						<h4>Select Subject</h4>
+						<form:select path="subjectId" cssClass="input-info">
+							<form:option value="" label="---Pick a Subject---" />
+							<form:options items="${subjectmodel}"/>
+						</form:select>
+						<h4>Select Content</h4>
+						<form:select path="contentId" cssClass="input-info">
+							<form:option value="" label="---Pick a Content---" />
+							<form:options items="${contentmodel}"/>
+						</form:select>
+						<h4>Select Trainer</h4>
+						<form:select path="username" cssClass="input-info">
+							<form:option value="" label="---Pick a Trainer---" />
+							<form:options items="${usermodel}"/>
+						</form:select>
+						<br/>
 						<form:hidden path="classId"/>
-						<form:hidden path="className"/>
-						<form:hidden path="subjectId"/>
-						<form:hidden path="contentId"/>
-						<input type="hidden" id="username" name="username" value="<%=SecurityUtils.getPrincipal().getUsername()%>"/>
-						<form:input type="password" id="codeInput" cssClass="input-info" path="password"/><br/> 
-						<input type="checkbox" id="" onclick="showpassFunc()" /> Show Password <br>
-						<button type="button" id="btnEditPass" title="Edit" class="btn btn-create-code">Edit</button>
+						<button type="button" id="btnAddClass" class="btn btn-create-asm">Create
+						Class</button>
 					</form:form>
-				</div>								
+					
+				</div>
 			</div>
 			<div id="sidebar">
 				<div id="calendar">
@@ -140,30 +138,50 @@
 		</div>
 	</div>
 	<script>
-		$('#btnEditPass').click(function(e) {
+		$('#btnAddClass').click(function(e) {
 			e.preventDefault();
 			var data = {};
-			var formData = $('#formEditPass').serializeArray();
-			$.each(formData, function (i, v) {
-	            data[""+v.name+""] = v.value;
-	        });
+			var formData = $('#formAddClass').serializeArray();
+			$.each(formData, function(i, v) {
+				data["" + v.name + ""] = v.value;
+			});
 			var classId = $('#classId').val();
-		    editPass(data);
+			if (classId == "") {
+				addClass(data);
+			} else {
+				updateClass(data);
+			}
 		});
-		
-		function editPass(data) {
+
+		function addClass(data) {
 			$.ajax({
-				url: '${classAPI}',
-				type: 'PUT',
-	            contentType: 'application/json',
-	            data: JSON.stringify(data),
-	            dataType: 'json',
-	            success: function (result) {
-	                window.location.href = "${editpassURL}?classId="+result.classId+"&message=update_success";
-	            },
-	            error: function (error) {
-	            	window.location.href = "${editpassURL}?classId="+result.classId+"&message=error_system";
-	            }
+				url : '${classAPI}',
+				type : 'POST',
+				contentType : 'application/json',
+				data : JSON.stringify(data),
+				dataType : 'json',
+				success : function(result) {
+					window.location.href = "${staffaddclassURL}";
+				},
+				error : function(error) {
+					window.location.href = "${staffmanageclassURL}?page=1&limit=6&message=error_system";
+				}
+			});
+		}
+
+		function updateClass(data) {
+			$.ajax({
+				url : '${classAPI}',
+				type : 'PUT',
+				contentType : 'application/json',
+				data : JSON.stringify(data),
+				dataType : 'json',
+				success : function(result) {
+					window.location.href = "${contentdetailURL}?classId="+ result.classId+"&message=update_success";
+				},
+				error : function(error) {
+					window.location.href = "${contentdetailURL}?classId="+ result.classId+"&message=error_system";
+				}
 			});
 		}
 	</script>

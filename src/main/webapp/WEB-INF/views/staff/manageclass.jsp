@@ -21,7 +21,7 @@
 						<img src="<c:url value='/template/assets/images/p3.jpg' />" alt="" class="place-img" />
 						<div class="place-body">
 							<h3 class="place-heading">${classlist.className}</h3>
-							<c:url var="classoverviewURL" value='/trainer/manageclass/class-overview?page=1&limit=4'>
+							<c:url var="classoverviewURL" value='/staff/manageclass/class-detail'>
 								<c:param name="classId" value="${classlist.classId}"/>
 							</c:url>
 							<a href="${classoverviewURL}"

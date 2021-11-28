@@ -1,10 +1,10 @@
 package com.btec.entity;
 
 import java.sql.Date;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -13,6 +13,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name = "user")
@@ -42,19 +44,20 @@ public class UserEntity extends BaseEntity {
 	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "username"), inverseJoinColumns = @JoinColumn(name = "roleId"))
 	private List<RoleEntity> roles = new ArrayList<>();
 	
-	@ManyToMany
+	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "user_class", joinColumns = @JoinColumn(name = "username"), inverseJoinColumns = @JoinColumn(name = "classId"))
-	private List<ClassEntity> classuser = new ArrayList<>();
+	@JsonBackReference
+	private List<ClassEntity> classUser = new ArrayList<>();
 	
 	@OneToMany(mappedBy = "user")
 	private List<SubasmEntity> subasmuser = new ArrayList<>();
 		
-	public List<ClassEntity> getClassuser() {
-		return classuser;
+	public List<ClassEntity> getClassUser() {
+		return classUser;
 	}
 
-	public void setClassuser(List<ClassEntity> classuser) {
-		this.classuser = classuser;
+	public void setClassUser(List<ClassEntity> classUser) {
+		this.classUser = classUser;
 	}
 
 	public List<SubasmEntity> getSubasmuser() {

@@ -16,4 +16,5 @@ public interface IClassService {
 	Map<Long, String> findAll();
 	ClassDTO findOne(Long classId);
 	ClassDTO save(ClassDTO dto);
+	List<ClassDTO> showClassByUsername(String username);
 }

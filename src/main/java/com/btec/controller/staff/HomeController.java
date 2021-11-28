@@ -12,6 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -42,7 +43,7 @@ public class HomeController {
 		ClassDTO model = new ClassDTO();
 		model.setPage(page);
 		model.setLimit(limit);
-		ModelAndView mav = new ModelAndView("trainer/manageclass");
+		ModelAndView mav = new ModelAndView("staff/manageclass");
 		Pageable pageable = new PageRequest(page - 1, limit);
 		model.setListResult(classService.findAll(pageable));
 		model.setTotalItem(classService.getTotalItem());
@@ -55,4 +56,5 @@ public class HomeController {
 		mav.addObject("model", model);
 		return mav;
 	   }
+	
 }

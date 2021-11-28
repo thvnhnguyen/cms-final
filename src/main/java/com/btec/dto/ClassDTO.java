@@ -8,7 +8,6 @@ public class ClassDTO extends AbstractDTO<ClassDTO> {
 	private String username;
 	private Long subjectId;
 	
-	
 	public Long getClassId() {
 		return classId;
 	}

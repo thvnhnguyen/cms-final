@@ -22,7 +22,7 @@
 			<div class="right-content">
 				<div class="nav-tab">
 					<c:url var="classoverviewtabURL"
-						value="/trainer/manageclass/class-overview">
+						value="/staff/manageclass/">
 						<c:param name="classId" value="${classlist.classId}"></c:param>
 						<c:param name="page" value="1"></c:param>
 						<c:param name="limit" value="4"></c:param>

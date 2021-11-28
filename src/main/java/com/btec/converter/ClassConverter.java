@@ -19,6 +19,7 @@ public class ClassConverter {
 		return result;
 	}
 	
+	
 	public ClassEntity toEntity(ClassDTO dto) {
 		ClassEntity result = new ClassEntity();
 		result.setClassName(dto.getClassName());

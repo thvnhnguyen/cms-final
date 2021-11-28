@@ -79,22 +79,25 @@ public class ClassService implements IClassService {
 	public ClassDTO save(ClassDTO dto) {
 		SubjectEntity subjectclass = subjectRepository.findOne(dto.getSubjectId());
 		ContentEntity contentclass = contentRepository.findOne(dto.getContentId());
-		List<UserEntity> userclass = userRepository.findAllByUsernameAndStatus(dto.getUsername(), SystemConstant.ACTIVE_STATUS);
+		UserEntity user = userRepository.findOneByUsernameAndStatus(dto.getUsername(), SystemConstant.ACTIVE_STATUS);
 		ClassEntity classEntity = new ClassEntity();
+		List<ClassEntity> classes = user.getClassUser();
 		if (dto.getClassId() != null) {
 			ClassEntity oldClass = classRepository.findOne(dto.getClassId());
 			oldClass.setSubject(subjectclass);
-			oldClass.setUserclass(userclass);
 			oldClass.setContent(contentclass);
 			classEntity = classConverter.toEntity(oldClass,dto);
 		}
 		else
 		{
 			classEntity = classConverter.toEntity(dto);
-			classEntity.setUserclass(userclass);
-			classEntity.setContent(contentclass);
 			classEntity.setSubject(subjectclass);
+			classEntity.setContent(contentclass);
+			classes.add(classEntity);
 		}
+		
+		user.setClassUser(classes);
+		userRepository.save(user);
 		return classConverter.toDto(classRepository.save(classEntity));
 	}
 	@Override
@@ -106,6 +109,16 @@ public class ClassService implements IClassService {
 			asmmodel.add(asmDTO);
 		}
 		return asmmodel;
+	}
+	@Override
+	public List<ClassDTO> showClassByUsername(String username) {
+		List<ClassEntity> classentity = userRepository.findOne(username).getClassUser();
+		List<ClassDTO> classmodel = new ArrayList<>();
+		for (ClassEntity classitem: classentity) {
+			ClassDTO classDTO = classConverter.toDto(classitem);
+			classmodel.add(classDTO);
+		}
+		return classmodel;
 	}
 
 }

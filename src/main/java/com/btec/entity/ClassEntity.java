@@ -3,6 +3,7 @@ package com.btec.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,10 +11,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name = "class")
@@ -36,19 +40,22 @@ public class ClassEntity extends BaseEntity {
     @JoinColumn(name = "contentId")
     private ContentEntity content;
 	
-	@ManyToMany(mappedBy = "classuser")
-    private List<UserEntity> userclass = new ArrayList<>();
+	@ManyToMany(mappedBy = "classUser")
+	@JsonBackReference
+    private List<UserEntity> userClass = new ArrayList<>();
 	
+
+	public List<UserEntity> getUserClass() {
+		return userClass;
+	}
+
+	public void setUserClass(List<UserEntity> userClass) {
+		this.userClass = userClass;
+	}
+
 	@OneToMany(mappedBy = "classs")
 	private List<AsmEntity> asms = new ArrayList<>();
 
-	public List<UserEntity> getUserclass() {
-		return userclass;
-	}
-
-	public void setUserclass(List<UserEntity> userclass) {
-		this.userclass = userclass;
-	}
 
 	public List<AsmEntity> getAsms() {
 		return asms;
@@ -99,5 +106,7 @@ public class ClassEntity extends BaseEntity {
 		return classId;
 	}
 	
-	
+	public void enrollUser(UserEntity userEntity) {
+		userClass.add(userEntity);
+	}
 }
