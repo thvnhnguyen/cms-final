@@ -17,4 +17,5 @@ public interface IClassService {
 	ClassDTO findOne(Long classId);
 	ClassDTO save(ClassDTO dto);
 	List<ClassDTO> showClassByUsername(String username);
+	void delete(Long classId);
 }

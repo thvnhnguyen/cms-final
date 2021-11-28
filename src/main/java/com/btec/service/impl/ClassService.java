@@ -120,5 +120,12 @@ public class ClassService implements IClassService {
 		}
 		return classmodel;
 	}
+	@Override
+	public void delete(Long classId) {
+		ClassEntity classEntity = classRepository.findByClassId(classId);
+		classEntity.getUserClass().forEach(user -> user.getClassUser().remove(classEntity));
+		userRepository.save(classEntity.getUserClass());
+		classRepository.delete(classEntity);
+	}
 
 }
