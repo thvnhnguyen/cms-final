@@ -50,13 +50,16 @@ public class JPAConfig {
 		dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
 		dataSource.setUrl("jdbc:mysql://localhost:3306/finalcms");
 		dataSource.setUsername("root");
-		dataSource.setPassword("admin");
+		dataSource.setPassword("1234");
 		return dataSource;
 	}
 	
 	Properties additionalProperties() {
 		Properties properties = new Properties();
 //		properties.setProperty("hibernate.hbm2ddl.auto", "create");
+//		Tạo mới database thì để create
+//		Update lại thì để update
+//		none thì k lm j ok r
 		properties.setProperty("hibernate.hbm2ddl.auto", "update");
 //		properties.setProperty("hibernate.hbm2ddl.auto", "none");
 		properties.setProperty("hibernate.enable_lazy_load_no_trans", "true");
