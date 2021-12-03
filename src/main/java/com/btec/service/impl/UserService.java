@@ -3,6 +3,7 @@ package com.btec.service.impl;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,7 +40,7 @@ public class UserService implements IUserService {
 	public Map<String, String> findAllTrainer() {
 		Long roleId = 2L;
 		Map<String, String> result = new HashMap<>();
-		List<UserEntity> entities = roleRepository.findOne(roleId).getUsers();
+		Set<UserEntity> entities = roleRepository.findOne(roleId).getUsers();
 		for (UserEntity item: entities) {
 			result.put(item.getUsername(), item.getFullName());
 		}

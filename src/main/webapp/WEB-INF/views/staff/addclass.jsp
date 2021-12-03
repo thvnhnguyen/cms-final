@@ -27,7 +27,7 @@
 						<c:param name="page" value="1"></c:param>
 						<c:param name="limit" value="4"></c:param>
 					</c:url>
-					<button class="btn tablink first-tab">
+					<button class="btn tablink first-tab" onclick="openTab(event,'content-overview')">
 						<c:if test="${not empty classmodel.classId }">
 							Update Class
 						</c:if>
@@ -72,15 +72,15 @@
 						<c:if test="${not empty classmodel.classId}">
 							<button type="button" id="btnAddClass" class="btn btn-create-asm">Update
 							Class</button>
+							<button style="background-color: #D11A2A; color : #fff;" id="btnDeleteAsm" class="btn btn-create-asm" type ="button" onclick="warningBeforeDelete()">
+							<i class="fas fa-trash"></i> Delete
+						</button>
 						</c:if>
 						<c:if test="${empty classmodel.classId}">
 							<button type="button" id="btnAddClass" class="btn btn-create-asm">Create
 							Class</button>
 						</c:if>
 					</form:form>
-					<button style="background-color: #D11A2A; color : #fff;" id="btnDeleteAsm" class="btn btn-create-asm" type ="button" onclick="warningBeforeDelete()">
-							<i class="fas fa-trash"></i> Delete
-						</button>
 				</div>
 			</div>
 			<div id="sidebar">
@@ -217,10 +217,10 @@
 			  cancelButtonText: "Cancel",
 			}).then(function(isConfirm) {
 			  if (isConfirm) {
-				  	var asmIds = $('#classId').map(function () {
+				  	var classId = $('#classId').map(function () {
 			            return $(this).val();
 			        }).get();
-					delClass(asmIds);
+					delClass(classId);
 			  }
 			});
 		} 
@@ -235,7 +235,7 @@
 	                window.location.href = "${staffmanageclassURL}?page=1&limit=6&message=delete_success";
 	            },
 	            error: function (error) {
-	            	window.location.href = "${classdetailURL}?"+result.classId"&message=error_system";
+	            	window.location.href = "${classdetailURL}?"+result.classId+"&message=error_system";
 	            }
 	        });
 	    }

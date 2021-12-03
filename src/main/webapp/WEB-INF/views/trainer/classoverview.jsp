@@ -1,9 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@include file="/common/taglib.jsp"%>
+<%@ page import="com.btec.util.SecurityUtils" %>
 <c:url var="manageclassURL" value="/trainer/manageclass?page=1&limit=4"/>
 <c:url var="homeURL" value="/trainer/home"/>
 <c:url var="editpassURL" value="/trainer/classoverview/editpass">
+	<c:param name="classId" value="${classinfo.classId}"/>
+</c:url>
+<c:url var="mngtraineeURL" value="/trainer/manage-trainee">
+	<c:param name="classId" value="${classinfo.classId}"/>
+	<c:param name="username" value="<%=SecurityUtils.getPrincipal().getUsername()%>"/>
+</c:url>
+<c:url var="createAsmURL" value="/trainer/classoverview/edit">
 	<c:param name="classId" value="${classinfo.classId}"/>
 </c:url>
 <!DOCTYPE html>
@@ -30,9 +38,8 @@
 			<div id="main-content">
 				<div class="right-content">
 					<div class="nav-tab">
-					<c:url var="createAsmURL" value="/trainer/classoverview/edit" />
 						<button class="btn tablink first-tab"
-							onclick="openTab(event,'Class-Overview')">Class Overview</button>
+							onclick="openTab(event,'Class-Overview')"><a href="${editpassURL}">Class Overview</button>
 						<button class="btn tablink"
 							onclick="openTab(event, 'Create-Assignment')">
 							<a href='${createAsmURL}'>Create Assignment</a>
@@ -40,8 +47,8 @@
 						<button class="btn tablink"
 							onclick="openTab(event, 'Create-Code')"><a href="${editpassURL}">Edit Code</a></button>
 						<button class="btn tablink"
-							onclick="openTab(event, 'Manage-Student')">Manage
-							Student</button>
+							onclick="openTab(event, 'Manage-Student')"><a href="${mngtraineeURL}">Manage
+							Student</a></button>
 					</div>
 					<div id="Class-Overview" class="tab-content class-overview">
 						<div class="class-info">
@@ -54,12 +61,9 @@
 						<c:forEach var="item" items="${model.listResult}">
 							<div class="topic">
 								<h1 class="topic-title">Topic 1</h1>
-								<c:url var="contentdetailURL" value="/trainer/classoverview/edit">
-									<c:param name="asmId" value="${item.asmId}"/>
-								</c:url>
 								<div class="topic-content">
 									<ul>
-										<a href="${contentdetailURL}"><i class="fas fa-file-alt"></i><span>${item.asmName}</span></a>
+										<a href="/trainer/classoverview/edit?classId=${classinfo.classId}&asmId=${item.asmId}"><i class="fas fa-file-alt"></i><span>${item.asmName}</span></a>
 									</ul>
 								</div>
 							</div>

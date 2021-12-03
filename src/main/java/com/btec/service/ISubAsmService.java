@@ -8,4 +8,5 @@ public interface ISubAsmService {
 	List<SubAsmDTO> findAll();
 	SubAsmDTO findById(long subAsmId);
 	SubAsmDTO savegrade(SubAsmDTO dto);
+	List<SubAsmDTO> findByAsmId(Long asmId);
 }

@@ -5,7 +5,7 @@ public class SubAsmDTO extends AbstractDTO<SubAsmDTO> {
 	private String fileName;
 	private String comment;
 	private Integer subStatus;
-	private int grade;
+	private Integer grade;
 	private Long asmId;
 	private String username;
 	public Long getSubAsmId() {
@@ -33,10 +33,10 @@ public class SubAsmDTO extends AbstractDTO<SubAsmDTO> {
 	public void setSubStatus(Integer subStatus) {
 		this.subStatus = subStatus;
 	}
-	public int getGrade() {
+	public Integer getGrade() {
 		return grade;
 	}
-	public void setGrade(int grade) {
+	public void setGrade(Integer grade) {
 		this.grade = grade;
 	}
 	public Long getAsmId() {

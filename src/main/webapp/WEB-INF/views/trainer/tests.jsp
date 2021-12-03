@@ -1,11 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<%@include file="/common/taglib.jsp"%>
-<c:url var="contentdetailURL" value="/trainer/classoverview/edit"/>
-<c:url var="classoverviewtabURL" value="/trainer/manageclass/class-overview?classId=${classmodel.classId}page=1&limit=4"/>
-<c:url var="manageclassURL" value="/trainer/manageclass?page=1&limit=4"/>
-<c:url var="homeURL" value="/trainer/home"/>
-<c:url var="asmAPI" value="/api/asm"/>
+    pageEncoding="UTF-8"%>
+    <%@include file="/common/taglib.jsp"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -69,21 +64,8 @@
 							<form:form role="form" id="formSubmitAsm"
 								modelAttribute="model">
 								<h4>Assignment Name</h4>
-								<form:input cssClass="input-info edit-input" path="asmName" />
-								<h4>Assignment Brief</h4>
-								<form:input cssClass="input-info edit-input" path="asmBrief" />
-								<h4>Submission Type</h4>
-								<form:input cssClass="input-info edit-input" path="subType" />
-								<h4>Due</h4>
-								<form:input type="date" cssClass="input-info edit-input" path="asmDateDue"/>
-								<form:input type="time" step="2" cssClass="input-info edit-input" path="asmTimeDue"/>
-								<h4>Limit Item</h4>
-								<form:input cssClass="input-info edit-input" path="limitItem" />
-								<h4>Class Name</h4>
-								<input type="hidden" id="classId" name="classId" value="${classmodel.classId}">
-								<input class="input-info edit-input" id="className" name="className" value="${classmodel.className}" disabled>
-								<br>
-								<form:hidden path="asmId" id="asmId"/>
+	
+								
 								<button type="button" id="btnAddOrUpdateAsm" title="Edit"
 									class="btn-edit-asm">Edit</button>
 							</form:form>
@@ -304,10 +286,10 @@
 	            contentType: 'application/json',
 	            data: JSON.stringify(data),
 	            success: function (result) {
-	                window.location.href = "${classoverviewURL}?classId="+result.classId+"page=1&limit=4&message=delete_success";
+	                window.location.href = "${classoverviewURL}?page=1&limit=4&message=delete_success";
 	            },
 	            error: function (error) {
-	            	window.location.href = "${classoverviewURL}?classId="+result.classId+"page=1&limit=4&message=error_system";
+	            	window.location.href = "${classoverviewURL}?page=1&limit=4&message=error_system";
 	            }
 	        });
 	    }

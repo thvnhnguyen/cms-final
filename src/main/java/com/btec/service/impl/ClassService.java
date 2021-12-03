@@ -4,23 +4,29 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.btec.constant.SystemConstant;
 import com.btec.converter.AsmConverter;
 import com.btec.converter.ClassConverter;
+import com.btec.converter.UserConverter;
 import com.btec.dto.AsmDTO;
 import com.btec.dto.ClassDTO;
+import com.btec.dto.UserDTO;
 import com.btec.entity.AsmEntity;
 import com.btec.entity.ClassEntity;
 import com.btec.entity.ContentEntity;
+import com.btec.entity.RoleEntity;
 import com.btec.entity.SubjectEntity;
 import com.btec.entity.UserEntity;
 import com.btec.repository.ClassRepository;
 import com.btec.repository.ContentRepository;
+import com.btec.repository.RoleRepository;
 import com.btec.repository.SubjectRepository;
 import com.btec.repository.UserRepository;
 import com.btec.service.IClassService;
@@ -45,7 +51,14 @@ public class ClassService implements IClassService {
 	private UserRepository userRepository;
 	
 	@Autowired
+	private RoleRepository roleRepository;
+	
+	@Autowired
 	private ClassConverter classConverter;
+	
+	@Autowired
+	private UserConverter userConverter;
+	
 	@Override
 	public List<ClassDTO> findAll(Pageable pageable) {
 		List<ClassDTO> models = new ArrayList<>();
@@ -59,6 +72,11 @@ public class ClassService implements IClassService {
 	@Override
 	public int getTotalItem() {
 		return (int) classRepository.count();
+	}
+	
+	@Override
+	public int getTrainerTotalItem(String username) {
+		return (int) userRepository.findOne(username).getClasses().size();
 	}
 	@Override
 	public Map<Long, String> findAll() {
@@ -81,7 +99,8 @@ public class ClassService implements IClassService {
 		ContentEntity contentclass = contentRepository.findOne(dto.getContentId());
 		UserEntity user = userRepository.findOneByUsernameAndStatus(dto.getUsername(), SystemConstant.ACTIVE_STATUS);
 		ClassEntity classEntity = new ClassEntity();
-		List<ClassEntity> classes = user.getClassUser();
+		user.setRole("trainer");
+		Set<ClassEntity> classes = user.getClasses();
 		if (dto.getClassId() != null) {
 			ClassEntity oldClass = classRepository.findOne(dto.getClassId());
 			oldClass.setSubject(subjectclass);
@@ -96,14 +115,14 @@ public class ClassService implements IClassService {
 			classes.add(classEntity);
 		}
 		
-		user.setClassUser(classes);
+		user.setClasses(classes);
 		userRepository.save(user);
 		return classConverter.toDto(classRepository.save(classEntity));
 	}
 	@Override
 	public List<AsmDTO> findByClassId(Long classId) {
 		List<AsmDTO> asmmodel = new ArrayList<>();
-		List<AsmEntity> entities = classRepository.findOneByclassId(classId).getAsms();
+		Set<AsmEntity> entities = classRepository.findOneByclassId(classId).getAsms();
 		for (AsmEntity item: entities) {
 			AsmDTO asmDTO = asmConverter.toDto(item);
 			asmmodel.add(asmDTO);
@@ -111,8 +130,8 @@ public class ClassService implements IClassService {
 		return asmmodel;
 	}
 	@Override
-	public List<ClassDTO> showClassByUsername(String username) {
-		List<ClassEntity> classentity = userRepository.findOne(username).getClassUser();
+	public List<ClassDTO> showClassByUsername(String username, Pageable pageable) {
+		Set<ClassEntity> classentity = userRepository.findOne(username).getClasses();
 		List<ClassDTO> classmodel = new ArrayList<>();
 		for (ClassEntity classitem: classentity) {
 			ClassDTO classDTO = classConverter.toDto(classitem);
@@ -123,9 +142,33 @@ public class ClassService implements IClassService {
 	@Override
 	public void delete(Long classId) {
 		ClassEntity classEntity = classRepository.findByClassId(classId);
-		classEntity.getUserClass().forEach(user -> user.getClassUser().remove(classEntity));
-		userRepository.save(classEntity.getUserClass());
+		classEntity.getUsers().forEach(user -> user.getClasses().remove(classEntity));
+		userRepository.save(classEntity.getUsers());
 		classRepository.delete(classEntity);
+	}
+	@Override
+	public List<UserDTO> listTraineeOfClass(Long classId, String username) {
+		Set<UserEntity> usersEntity = classRepository.findOne(classId).getUsers();
+		List<UserDTO> usersDTO = new ArrayList<>();
+		Long roleId = 2L;
+		RoleEntity trainerrole = roleRepository.findOne(roleId);
+		for (UserEntity users: usersEntity) {
+			if (!(users.getRole() == "trainer")) {
+				UserDTO userDTO = userConverter.toDto(users);
+				usersDTO.add(userDTO);
+			}
+		}
+		return usersDTO;
+	}
+	@Override
+	@Transactional
+	public void removeUser(String username, Long classId) {
+		UserEntity userEntity = userRepository.findOne(username);
+		Set<UserEntity> users = classRepository.findOne(classId).getUsers();
+		ClassEntity classEntity = classRepository.findOne(classId);
+		Set<ClassEntity> classes = userRepository.findOne(username).getClasses();
+		classes.remove(classEntity);
+		users.remove(userEntity);
 	}
 
 }

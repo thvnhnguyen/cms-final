@@ -60,12 +60,10 @@
 							<form:input type="time" step="2" value="01:00:00" cssClass="input-info edit-input" path="asmTimeDue"/>
 							<h4>Limit Item</h4>
 							<form:input cssClass="input-info edit-input" path="limitItem"/>
-							<h4>Class Name</h4>
-							<form:select cssClass="input-info edit-input" path="classId">					
-									<form:options items="${classlist}"/>
-							</form:select><br>
+							<input type="hidden" id="classId" value="${classmodel.classId}" name="classId"/>
 							<form:hidden path="asmId" id="asmId"/>
-							<button type="button" id="btnAddOrUpdateAsm" title="Create Assignment"
+							<br>
+							<button style="float: left;" type="button" id="btnAddOrUpdateAsm" title="Create Assignment"
 									class="btn-edit-asm">Create Assignment</button>
 						</form:form>
 					</div>
@@ -170,7 +168,7 @@
             data: JSON.stringify(data),
             dataType: 'json',
             success: function (result) {
-            	window.location.href = "${contentdetailURL}?asmId="+result.asmId+"&message=insert_success";
+            	window.location.href = "${contentdetailURL}?classId="+result.classId+"&asmId="+result.asmId+"&message=insert_success";
             },
             error: function (error) {
             	window.location.href = "${classoverviewURL}?page=1&limit=4&message=error_system";
@@ -186,7 +184,7 @@
             data: JSON.stringify(data),
             dataType: 'json',
             success: function (result) {
-            	window.location.href = "${contentdetailURL}?asmId="+result.asmId+"&message=update_success";
+            	window.location.href = "${contentdetailURL}?classId="+result.classId+"&asmId="+result.asmId+"&message=update_success";
             },
             error: function (error) {
             	window.location.href = "${contentdetailURL}?asmId="+result.asmId+"&message=error_system";

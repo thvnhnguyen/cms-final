@@ -35,6 +35,12 @@ public class HomeController {
 	@Autowired
 	private MessageUtil messageUtil;
 	
+	@RequestMapping(value = "/trainer/test", method = RequestMethod.GET)
+	public ModelAndView test() {
+		ModelAndView mav = new ModelAndView("trainer/tests");
+		return mav;
+	}
+	
 	@RequestMapping(value = "/trainer/home", method = RequestMethod.GET)
 	   public ModelAndView trainerHome() {
 	      ModelAndView mav = new ModelAndView("trainer/home");
@@ -64,8 +70,8 @@ public class HomeController {
 		model.setLimit(limit);
 		ModelAndView mav = new ModelAndView("trainer/manageclass");
 		Pageable pageable = new PageRequest(page - 1, limit);
-		model.setListResult(classService.showClassByUsername(username));
-		model.setTotalItem(classService.getTotalItem());
+		model.setListResult(classService.showClassByUsername(username, pageable));
+		model.setTotalItem(classService.getTrainerTotalItem(username));
 		model.setTotalPage((int) Math.ceil((double) model.getTotalItem() / model.getLimit()));
 		if (request.getParameter("message") != null) {
 			Map<String, String> message = messageUtil.getMessage(request.getParameter("message"));

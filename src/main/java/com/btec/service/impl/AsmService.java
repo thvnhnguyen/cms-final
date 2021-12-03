@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.btec.converter.AsmConverter;
 import com.btec.dto.AsmDTO;
@@ -54,7 +55,7 @@ public class AsmService implements IAsmService {
 	@Override
 	@org.springframework.transaction.annotation.Transactional
 	public AsmDTO save(AsmDTO dto) {
-		ClassEntity asmclass = classRepository.findOneByclassId(dto.getClassId());
+		ClassEntity asmclass = classRepository.findOne(dto.getClassId());
 		AsmEntity asmEntity = new AsmEntity();
 		if (dto.getAsmId() != null) {
 			AsmEntity oldAsm = asmRepository.findOne(dto.getAsmId());
@@ -71,6 +72,7 @@ public class AsmService implements IAsmService {
 	}
 
 	@Override
+	@Transactional
 	public void delete(long[] asmIds) {
 		for (long asmid: asmIds) {
 			asmRepository.delete(asmid);

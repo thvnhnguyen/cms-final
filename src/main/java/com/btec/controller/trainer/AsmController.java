@@ -8,14 +8,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.xml.MarshallingView;
 
 import com.btec.dto.AsmDTO;
 import com.btec.dto.ClassDTO;
 import com.btec.dto.SubAsmDTO;
+import com.btec.dto.UserDTO;
 import com.btec.service.IAsmService;
 import com.btec.service.IClassService;
 import com.btec.service.ISubAsmService;
@@ -60,7 +63,7 @@ public class AsmController {
 	}
 
 	@RequestMapping(value = "/trainer/classoverview/edit", method = RequestMethod.GET)
-	public ModelAndView createEditAsm(@RequestParam(value = "asmId", required = false) Long asmId, HttpServletRequest request) {
+	public ModelAndView createEditAsm(@RequestParam(value = "classId") Long classId, @RequestParam(value = "asmId", required = false) Long asmId, HttpServletRequest request) {
 		ModelAndView mav;
 		SubAsmDTO subasm = new SubAsmDTO();
 		AsmDTO model = new AsmDTO();
@@ -68,7 +71,7 @@ public class AsmController {
 		if (asmId != null) {
 			mav = new ModelAndView("trainer/class/contentdetail");
 			model = asmService.findById(asmId);
-			subasm.setListResult(subAsmService.findAll());
+			subasm.setListResult(subAsmService.findByAsmId(asmId));
 			mav.addObject("subasmlist", subasm);
 		}
 		else
@@ -80,7 +83,7 @@ public class AsmController {
 			mav.addObject("message", message.get("message"));
 			mav.addObject("alert", message.get("alert"));
 		}
-		mav.addObject("classlist", classService.findAll());
+		mav.addObject("classmodel", classService.findOne(classId));
 		mav.addObject("model", model);
 		return mav;
 	}
@@ -110,6 +113,16 @@ public class AsmController {
 			mav.addObject("alert", message.get("alert"));
 		}
 		mav.addObject("subasminfo", modelsubasm);
+		return mav;
+	}
+	
+	@RequestMapping(value = "/trainer/manage-trainee")
+	public ModelAndView manageTrainee(@RequestParam (value = "classId") Long classId, @RequestParam (value = "username") String username, HttpServletRequest request) {
+		UserDTO usermodel = new UserDTO();
+		usermodel.setListResult(classService.listTraineeOfClass(classId, username));
+		ModelAndView mav = new ModelAndView("trainer/class/mngtrainee");
+		mav.addObject("userList", usermodel);
+		mav.addObject("classinfo", classService.findOne(classId));
 		return mav;
 	}
 }

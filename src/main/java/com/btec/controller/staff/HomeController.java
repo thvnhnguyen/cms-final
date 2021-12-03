@@ -32,8 +32,14 @@ public class HomeController {
 	@Autowired MessageUtil messageUtil;
 	
 	@RequestMapping(value = "/staff/home", method = RequestMethod.GET)
-	public ModelAndView accessDenied() {
+	public ModelAndView staffHome() {
 		ModelAndView mav = new ModelAndView("staff/home");
+		return mav;
+	}
+	
+	@RequestMapping(value = "/staff/test", method = RequestMethod.GET)
+	public ModelAndView test() {
+		ModelAndView mav = new ModelAndView("staff/tests");
 		return mav;
 	}
 	

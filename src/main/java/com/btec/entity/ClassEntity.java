@@ -1,9 +1,8 @@
 package com.btec.entity;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,7 +10,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -40,28 +38,26 @@ public class ClassEntity extends BaseEntity {
     @JoinColumn(name = "contentId")
     private ContentEntity content;
 	
-	@ManyToMany(mappedBy = "classUser")
+	@ManyToMany(mappedBy = "classes")
 	@JsonBackReference
-    private List<UserEntity> userClass = new ArrayList<>();
-	
-
-	public List<UserEntity> getUserClass() {
-		return userClass;
-	}
-
-	public void setUserClass(List<UserEntity> userClass) {
-		this.userClass = userClass;
-	}
+    private Set<UserEntity> users = new HashSet<>();
 
 	@OneToMany(mappedBy = "classs")
-	private List<AsmEntity> asms = new ArrayList<>();
+	private Set<AsmEntity> asms = new HashSet<>();
 
+	public Set<UserEntity> getUsers() {
+		return users;
+	}
 
-	public List<AsmEntity> getAsms() {
+	public void setUsers(Set<UserEntity> users) {
+		this.users = users;
+	}
+
+	public Set<AsmEntity> getAsms() {
 		return asms;
 	}
 
-	public void setAsms(List<AsmEntity> asms) {
+	public void setAsms(Set<AsmEntity> asms) {
 		this.asms = asms;
 	}
 
@@ -106,7 +102,4 @@ public class ClassEntity extends BaseEntity {
 		return classId;
 	}
 	
-	public void enrollUser(UserEntity userEntity) {
-		userClass.add(userEntity);
-	}
 }

@@ -2,10 +2,10 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/common/taglib.jsp"%>
 <%@ page import="com.btec.util.SecurityUtils" %>
-<<c:url var="manageclassURL" value="/trainer/manageclass">
+<c:url var="manageclassURL" value="/trainer/manageclass">
 	<c:param name="username" value="<%=SecurityUtils.getPrincipal().getUsername()%>"/>
 	<c:param name="page" value="1"/>
-	<c:param name="limit" value="6"/>
+	<c:param name="limit" value="4"/>
 </c:url>
 <div id="container">
 	<div id="top">

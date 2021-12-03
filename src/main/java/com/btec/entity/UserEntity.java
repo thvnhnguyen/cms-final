@@ -1,8 +1,8 @@
 package com.btec.entity;
 
 import java.sql.Date;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -39,33 +39,44 @@ public class UserEntity extends BaseEntity {
 
 	@Column(name = "status")
 	private Integer status;
+	
+	@Column(name = "role")
+	private String role;
 
 	@ManyToMany
 	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "username"), inverseJoinColumns = @JoinColumn(name = "roleId"))
-	private List<RoleEntity> roles = new ArrayList<>();
+	private Set<RoleEntity> roles = new HashSet<>();
 	
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "user_class", joinColumns = @JoinColumn(name = "username"), inverseJoinColumns = @JoinColumn(name = "classId"))
 	@JsonBackReference
-	private List<ClassEntity> classUser = new ArrayList<>();
+	private Set<ClassEntity> classes = new HashSet<>();
 	
 	@OneToMany(mappedBy = "user")
-	private List<SubasmEntity> subasmuser = new ArrayList<>();
-		
-	public List<ClassEntity> getClassUser() {
-		return classUser;
+	private Set<SubasmEntity> subasms = new HashSet<>();
+
+	public Set<RoleEntity> getRoles() {
+		return roles;
 	}
 
-	public void setClassUser(List<ClassEntity> classUser) {
-		this.classUser = classUser;
+	public void setRoles(Set<RoleEntity> roles) {
+		this.roles = roles;
 	}
 
-	public List<SubasmEntity> getSubasmuser() {
-		return subasmuser;
+	public Set<ClassEntity> getClasses() {
+		return classes;
 	}
 
-	public void setSubasmuser(List<SubasmEntity> subasmuser) {
-		this.subasmuser = subasmuser;
+	public void setClasses(Set<ClassEntity> classes) {
+		this.classes = classes;
+	}
+
+	public Set<SubasmEntity> getSubasms() {
+		return subasms;
+	}
+
+	public void setSubasms(Set<SubasmEntity> subasms) {
+		this.subasms = subasms;
 	}
 
 	public String getUsername() {
@@ -124,12 +135,12 @@ public class UserEntity extends BaseEntity {
 		this.status = status;
 	}
 
-	public List<RoleEntity> getRoles() {
-		return roles;
+	public String getRole() {
+		return role;
 	}
 
-	public void setRoles(List<RoleEntity> roles) {
-		this.roles = roles;
+	public void setRole(String role) {
+		this.role = role;
 	}
 
 }
