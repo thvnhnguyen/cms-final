@@ -88,11 +88,11 @@ public class HomeController {
 		if (auth != null) {
 			new SecurityContextLogoutHandler().logout(request, response, auth);
 		}
-		return new ModelAndView("/trainer/home");
+		return new ModelAndView("redirect:/trainer/home");
 	}
 	
 	@RequestMapping(value = "/accessDenied", method = RequestMethod.GET)
 	public ModelAndView accessDenied() {
-		return new ModelAndView("/login?accessDenied");
+		return new ModelAndView("redirect:/login?accessDenied");
 	}
 }

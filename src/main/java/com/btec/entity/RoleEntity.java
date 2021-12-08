@@ -31,7 +31,7 @@ public class RoleEntity extends BaseEntity {
 		return roleName;
 	}
 	
-	@ManyToMany(mappedBy = "roles")
+	@ManyToMany(mappedBy = "role")
     private Set<UserEntity> users = new HashSet<>();
 
 	public void setRoleName(String roleName) {
